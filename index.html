@@ -2,431 +2,424 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyCast</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movies App</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        inter: ['Inter', 'sans-serif'],
-                    },
                     colors: {
-                        primary: '#0b9586',
-                        secondary: '#3cab90',
-                        accent: '#ffbb1c',
-                        dark: '#101828',
-                        gray: '#475467',
-                        lightgray: '#92989f',
-                    }
+                        'main-color': '#ff2c1f',
+                        'text-color': '#020307',
+                        'bg-color': '#fff',
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
                 }
             }
         }
     </script>
-    <style>
-        html{
-            scroll-behavior: smooth;
-        }
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <style type="text/tailwindcss">
+        /* Navbar styles */
+header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 100px;
+  z-index: 1000;
+  transition: all 0.5s ease;
+}
+
+.logo {
+  font-size: 1.5em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo i {
+  font-size: 1.8em;
+}
+
+.navbar {
+  display: flex;
+  gap: 4em;
+}
+
+.navbar li {
+  position: relative;
+}
+
+.navbar a {
+  font-size: 1em;
+  font-weight: 500;
+  transition: all 0.4s ease;
+}
+
+.navbar a::after {
+  content: '';
+  position: absolute;
+  background-color: #ff2c1f;
+  width: 0;
+  height: 3px;
+  left: 0;
+  bottom: -4px;
+  transition: 0.4s all linear;
+}
+
+.navbar a:hover::after,
+.home-active::after {
+  width: 100%;
+}
+
+.btn {
+  background-color: #ff2c1f;
+  color: #fff;
+  padding: 10px 25px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+#menu-icon {
+  font-size: 1.8em;
+  cursor: pointer;
+  display: none;
+  z-index: 10001;
+}
+
+/* Mobile menu styles */
+@media (max-width: 1024px) {
+  header {
+    padding: 20px 50px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 15px 20px !important;
+  }
+  
+  #menu-icon {
+    display: block !important;
+  }
+  
+  .navbar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    transition: right 0.5s ease;
+    z-index: 10000;
+  }
+  
+  .navbar.active {
+    right: 0;
+  }
+  
+  .btn {
+    display: none;
+  }
+  
+  /* Adjust home section for mobile */
+  .home-text {
+    left: 0;
+    padding: 0 2rem;
+    width: 100%;
+  }
+}
     </style>
 </head>
 
-<body class="font-inter">
-    <!-- ! navbar -->
-    <nav class="bg-primary py-4 md:px-32 fixed top-0 left-0 right-0 z-50">
-        <section class="container mx-auto flex flex-wrap items-center justify-between">
-            <!-- Logo -->
-            <div class="nav-logo order-1">
-                <img src="./Images/images-card.png" class="w-[157px] h-[54px] object-cover" alt="placeholder">
-            </div>
-    
-            <!-- Hamburger Toggle -->
-            <div class="nav-toggle order-2 md:hidden text-white text-3xl cursor-pointer" id="navToggle">
-                ☰
-            </div>
-    
-            <!-- Nav Links -->
-            <div class="w-full order-4 md:order-2 hidden md:flex md:w-auto justify-center flex-grow" id="navList">
-                <ul class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-8 mt-4 md:mt-0">
-                    <li><a href="#home"
-                            class="text-white text-xl px-5 py-2 bg-black bg-opacity-5 rounded border-b-2 border-black border-opacity-30">Home</a>
-                    </li>
-                    <li><a href="#trade" class="text-white text-xl px-5 py-2">Trade</a></li>
-                    <li><a href="#shop" class="text-white text-xl px-5 py-2">Shop</a></li>
-                    <li><a href="#contact" class="text-white text-xl px-5 py-2">Contact Us</a></li>
-                </ul>
-            </div>
-    
-            <!-- Call Us -->
-            <div class="order-3 w-full md:w-auto text-center md:text-right mt-4 md:mt-0">
-                <h2 class="text-white text-lg font-normal tracking-wide">Call Us</h2>
-                <h1 class="text-white text-2xl font-bold tracking-wide">+1 2345 3456 45</h1>
-            </div>
-        </section>
-    
-        <!-- Optional: JS to toggle nav menu on small screens -->
-        <script>
-            const toggle = document.getElementById('navToggle');
-            const navList = document.getElementById('navList');
-
-            toggle.addEventListener('click', () => {
-                navList.classList.toggle('hidden');
-            });
-        </script>
-    </nav>
-    
-    
-
-    <!-- ! header -->
-    <header id="home" class="mt-20 bg-cover bg-center min-h-[80vh] relative"
-        style="background-image: url('./Images/header_image.jpg')">
-        <div class="absolute top-1/4 left-10 md:left-36">
-            <div class="flex items-center mb-8">
-                <h3 class="text-white text-lg font-normal tracking-wide">01</h3>
-                <div class="relative mx-5 md:ms-10 md:me-40 ">
-                    <div class="w-20 md:w-18 h-1 bg-white rounded"></div>
-                    <div class="absolute left-16 bottom-0  md:left-20 w-32 h-1 bg-[#575757] rounded"></div>
-                </div>
-                <h3 class="text-white text-lg font-normal tracking-wide ms-28 md:ms-0">04</h3>
-            </div>
-            <div class="header-section-2">
-                <h1 class="text-white font-semibold text-4xl md:text-5xl tracking-tight w-full md:w-2/4">
-                    Solar Panel Installers In Plymouth
-                </h1>
-                <p class="text-white font-semibold text-xl mt-4 w-full md:w-2/4 leading-8">
-                    Fueled is an award-winning technology consultancy that transforms businesses by generating ideas,
-                    building products, and accelerating growth.
-                </p>
-                <div class="header-buttons mt-8">
-                    <button
-                        class="bg-secondary text-white px-8 py-3 rounded-full text-sm mr-5 hover:bg-accent hover:text-black transition-all duration-500">Call
-                        Us Today</button>
-                    <button
-                        class="bg-accent text-black px-8 py-3 rounded-full text-sm hover:bg-secondary hover:text-white transition-all duration-500">Requst
-                        a call back</button>
-                </div>
-            </div>
-        </div>
+<body class="bg-text-color text-bg-color font-poppins">
+    <!--Navbar  -->
+    <header
+        class="fixed top-0 right-0 w-full flex justify-between items-center py-5 px-[100px] z-[1000] transition-all duration-500">
+        <a href="#home" class="logo text-lg font-semibold text-bg-color flex items-center gap-2">
+            <i class="fa-solid fa-film text-2xl text-bg-color"></i> Movies
+        </a>
+        <div id="menu-icon" class="text-2xl cursor-pointer z-[100001] hidden"><i class="fa-solid fa-bars"></i></div>
+        <!-- menu -->
+        <ul class="navbar flex gap-20">
+            <li class="relative"><a class="home-active navbar-link text-main-color font-medium" href="#home">Home</a>
+            </li>
+            <li class="relative"><a class="navbar-link text-main-color font-medium" href="#movies">Movies</a></li>
+            <li class="relative"><a class="navbar-link text-main-color font-medium" href="#coming soon">Coming Soon</a>
+            </li>
+            <li class="relative"><a class="navbar-link text-main-color font-medium" href="#newsletter">Newsletter</a>
+            </li>
+        </ul>
+        <a href="#" class="btn bg-main-color text-bg-color px-6 py-3 rounded-lg font-normal">Sign In</a>
     </header>
-
-    <!-- ! section 2  -->
-    <div
-        class="bg-white min-h-screen flex flex-col md:flex-row justify-center items-center py-20 px-4 md:px-0 relative">
-        <div class="w-full md:w-2/5 mb-12 md:mb-0 md:mr-12">
-            <h1 class="text-dark font-semibold text-4xl tracking-tight w-8/12">The Friendliest Installers in the
-                South-West</h1>
-            <p class="text-gray-500 font-normal text-base mt-6 leading-6">
-                At Solidarity Solar our aims are to help our customers towards a sustainable future and genuinely care
-                about the quality of products we use for our installs. We never sell you equipment you don't need and
-                will always advise
-                to the best of our ability, No hard sell or pushy sales tactics ever. We take pride in our work and do
-                our best to make
-                sure that we meet, or exceed, our customers' expectations.
-            </p>
-            <ul class="mt-12">
-                <li class="text-dark text-xl font-semibold leading-10"><span
-                        class="text-green-600 tracking-widest text-xl font-bold mr-2">01/</span> Collaborate with 100+
-                    leading</li>
-                <li class="text-dark text-xl font-semibold leading-10"><span
-                        class="text-green-600 tracking-widest text-xl font-bold mr-2">02/</span>100+ leading
-                    universities and companies</li>
-                <li class="text-dark text-xl font-semibold leading-10"><span
-                        class="text-green-600 tracking-widest text-xl font-bold mr-2">03/</span>leading universities and
-                    companies</li>
-                <li class="text-dark text-xl font-semibold leading-10"><span
-                        class="text-green-600 tracking-widest text-xl font-bold mr-2">04/</span>universities and
-                    companies</li>
-            </ul>
-        </div>
-        <div class="w-full md:w-auto">
-            <div class="relative">
-                <img src="./Images/images-2.png" alt="weather" class="w-full md:w-[469px] h-[552px] rounded-lg">
-                <div class="absolute -bottom-20 -right-10 md:right-64 md:bottom-6 bg-accent w-64 h-52 rounded-lg p-6">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/solar-panel.png" alt="" class="w-16 h-16">
-                    <h3 class="text-dark font-normal text-lg mt-4">The Piece That Sold Me On This Polarizing Trend</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ! section 3 -->
-    <section id="trade" class="bg-cover bg-center min-h-[70vh] relative"
-        style="background-image: url('./Images/images-3.png')">
-        <div class="absolute top-1/4 left-10 md:left-32">
-            <h1 class="text-white font-semibold text-4xl">Power that Doesn't Cost the Earth</h1>
-            <p class="text-white font-medium text-xl mt-6 leading-relaxed w-full md:w-3/4 mb-8">
-                If you need advice then give us a call on 07745593882 or hit the button below to request a call back!
-            </p>
-            <button
-                class="bg-accent text-black px-10 py-4 rounded-full text-sm hover:bg-secondary hover:text-white transition-all duration-500">Call
-                Us Today</button>
+    <!-- end navbar -->
+    <!-- Home -->
+    <section id="home" class="home w-full min-h-screen bg-[url('img/home3.jpg')] bg-center bg-cover relative">
+        <div class="home-text absolute top-[40%] pl-20">
+            <span class="font-medium text-black uppercase">Marvel Universe</span>
+            <h2 class="text-bg-color text-7xl font-bold my-4">
+                Spider-Man<br />
+                Far From Home
+            </h2>
+            <a href="#" class="btn bg-main-color text-bg-color px-6 py-3 rounded-lg font-normal">Book Now</a>
         </div>
     </section>
-
-    <!-- ! section 4 -->
-    <section id="shop" class="bg-white min-h-screen py-20 px-4">
-        <h1 class="text-dark font-semibold text-4xl text-center">Solar Kits</h1>
-        <p class="text-gray-500 font-normal text-base text-center mt-6 leading-6 w-full md:w-3/5 mx-auto">
-            Complete solar system kits, ready for installation. They can be used to supplement on-grid housing, a
-            complete self-sustaining home or some combination of the two.
-        </p>
-        <div class="flex flex-col md:flex-row justify-center items-center gap-8 mt-12">
-            <div class="w-full md:w-[360px] shadow-xl rounded-lg overflow-hidden">
-                <img src="./Images/images-4.png" alt="house-1" class="w-full h-60 object-cover">
-                <div class="p-5">
-                    <h1 class="text-dark font-semibold text-xl">Off Grid</h1>
-                    <p class="text-gray-500 font-normal text-base mt-4 leading-6">
-                        WOC has contributed to students so that they can work in their dream company, we will continue
-                        to
-                        stick to our commitm...
-                    </p>
-                    <h2 class="text-secondary font-semibold text-base mt-6 cursor-pointer">View Products <i
-                            class="fas fa-arrow-right ml-2"></i> </h2>
-                </div>
-            </div>
-
-            <div class="w-full md:w-[360px] shadow-xl rounded-lg overflow-hidden">
-                <img src="./Images/images-5.png" alt="house-1" class="w-full h-60 object-cover">
-                <div class="p-5">
-                    <h1 class="text-dark font-semibold text-xl">On Grid</h1>
-                    <p class="text-gray-500 font-normal text-base mt-4 leading-6">
-                        WOC has contributed to students so that they can work in their dream company, we will continue
-                        to
-                        stick to our commitm...
-                    </p>
-                    <h2 class="text-secondary font-semibold text-base mt-6 cursor-pointer">View Products <i
-                            class="fas fa-arrow-right ml-2"></i> </h2>
-                </div>
-            </div>
-
-            <div class="w-full md:w-[360px] shadow-xl rounded-lg overflow-hidden">
-                <img src="./Images/images-6.png" alt="house-1" class="w-full h-60 object-cover">
-                <div class="p-5">
-                    <h1 class="text-dark font-semibold text-xl">Hybrid</h1>
-                    <p class="text-gray-500 font-normal text-base mt-4 leading-6">
-                        WOC has contributed to students so that they can work in their dream company, we will continue
-                        to
-                        stick to our commitm...
-                    </p>
-                    <h2 class="text-secondary font-semibold text-base mt-6 cursor-pointer">View Products <i
-                            class="fas fa-arrow-right ml-2"></i> </h2>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ! section 5 -->
-    <section class="bg-cover bg-center min-h-[60vh] flex justify-center items-center"
-        style="background-image: url('./Images/images-7.png')">
+    <!-- Home -->
+    <!-- Movies -->
+    <section id="movies" class="movies py-16 px-6">
+        <h2 class="heading font-medium text-lg uppercase border-b border-main-color max-w-[1000px] mx-auto">Opening this
+            Week</h2>
         <div
-            class="text-center bg-black bg-opacity-50 backdrop-blur-md w-full md:w-[858px] min-h-[311px] rounded-xl p-11 mx-4">
-            <h1 class="text-white font-semibold text-4xl">Repairs Over Replacement</h1>
-            <p class="text-white font-medium text-xl mt-6 leading-relaxed">
-                We approach every aspect of our business with sustainability in mind. That's why we believe it's always
-                worth trying to fix a system before outright replacing it, wherever possible – it requires fewer
-                materials and is easier
-                on the planet, as well as your wallet! If another company tells you that your system needs to be
-                replaced, just give us
-                a call and we'll see if we can repair it first.
-            </p>
-        </div>
-    </section>
-
-    <!-- ! section 6 -->
-    <section class="bg-accent bg-opacity-5 min-h-screen py-20 px-4">
-        <div class="flex flex-col md:flex-row md:ms-60 justify-center gap-12">
-            <div class="w-full md:w-[360px]">
-                <div class="bg-secondary w-14 h-14 rounded-lg text-white flex justify-center items-center mb-8">
-                    <i class="fa-solid fa-bolt text-2xl"></i>
+            class="movies-container max-w-[1000px] mx-auto grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 mt-8">
+            <!-- Box 1 -->
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/m1.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
                 </div>
-                <h1 class="text-dark font-semibold text-4xl">Energy Innovators - the products we love</h1>
-                <p class="text-gray-500 font-normal text-lg mt-7 leading-7 w-full">
-                    Lorem ipsum dolor sit amet consectetur. Suspendisse suspendisse tempor et ipsum sit egestas nunc.
-                    Diam in cum a in.
-                </p>
+                <h3 class="text-sm font-medium text-main-color mt-2">Venom</h3>
+                <span class="text-xs">120min | Action</span>
             </div>
-            <div class="w-full">
-                <div class="flex flex-col md:flex-row gap-8 mb-8">
-                    <div class="w-full md:w-[360px] bg-secondary bg-opacity-5 rounded-xl border border-secondary p-6">
-                        <img src="./Images/images-card.png" alt="placeholder"
-                            class="w-full h-28 rounded-lg object-cover">
-                        <h1 class="text-dark font-semibold text-xl mt-8">SoliTek - The European Manufacturer of Solar
-                            Panels</h1>
-                        <p class="text-gray-500 font-normal text-base mt-4 leading-6">
-                            We work closely importing solar panels from Solitek, they offer 30 year warranties on their
-                            panels and are constantly coming up with new ideas - including their <span
-                                class="underline underline-offset-4 decoration-2">solar greenhouse</span>.
-                        </p>
-                        <h2 class="text-secondary font-semibold text-base mt-6 cursor-pointer">View integration<i
-                                class="fas fa-arrow-right ml-2"></i> </h2>
-                    </div>
-                    <div class="w-full md:w-[360px] bg-secondary bg-opacity-5 rounded-xl border border-secondary p-6">
-                        <img src="./Images/images-card.png" alt="placeholder"
-                            class="w-full h-28 rounded-lg object-cover">
-                        <h1 class="text-dark font-semibold text-xl mt-8">Sunsynk - No Power No <br> Problem</h1>
-                        <p class="text-gray-500 font-normal text-base mt-4 leading-6">
-                            Sunsynk build the most versatile hybrid inverter on the market, designed to take up to 7kW
-                            of
-                            solar on a standard domestic supply - for simultaneous battery charging and household usage.
-                        </p>
-                        <h2 class="text-secondary font-semibold text-base mt-6 cursor-pointer">View integration<i
-                                class="fas fa-arrow-right ml-2"></i> </h2>
-                    </div>
+            <!-- Box 2 -->
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/m2.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
                 </div>
-                <div class="flex flex-col md:flex-row gap-8">
-                    <div class="w-full md:w-[360px] bg-secondary bg-opacity-5 rounded-xl border border-secondary p-6">
-                        <img src="./Images/images-card.png" alt="placeholder"
-                            class="w-full h-28 rounded-lg object-cover">
-                        <h1 class="text-dark font-semibold text-xl mt-8">BYD - Electrifying Transport</h1>
-                        <p class="text-gray-500 font-normal text-base mt-4 leading-6">
-                            We use battery cells made by BYD, a market leader in lithium batteries. BYD batteries are in
-                            cars, trucks, and buses - they build robust batteries.
-                        </p>
-                        <h2 class="text-secondary font-semibold text-base mt-6 cursor-pointer">View integration<i
-                                class="fas fa-arrow-right ml-2"></i> </h2>
-                    </div>
-                    <div class="w-full md:w-[360px] bg-secondary bg-opacity-5 rounded-xl border border-secondary p-6">
-                        <img src="./Images/images-card.png" alt="placeholder"
-                            class="w-full h-28 rounded-lg object-cover">
-                        <h1 class="text-dark font-semibold text-xl mt-8">REC - Solar's Most Trusted</h1>
-                        <p class="text-gray-500 font-normal text-base mt-4 leading-6">
-                            REC - Renewable Energy Corporation, are one of the longest trading names in solar. They know
-                            how to be truly sustainable in this industry - their panels are 100% lead free and have the
-                            most trusted warranty in
-                            solar.
-                        </p>
-                        <h2 class="text-secondary font-semibold text-base mt-6 cursor-pointer">View integration<i
-                                class="fas fa-arrow-right ml-2"></i> </h2>
-                    </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Dunkerk</h3>
+                <span class="text-xs">105min | Adventure</span>
+            </div>
+            <!-- Box 3 -->
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/m3.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
                 </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Batman & Superman</h3>
+                <span class="text-xs">100min | Thriller</span>
             </div>
-        </div>
-    </section>
-
-    <!-- ! section 7 -->
-    <section class="min-h-screen py-20 px-4">
-        <h1 class="text-dark font-semibold text-4xl text-center">Our values</h1>
-        <p class="text-gray-500 font-normal text-lg text-center mt-6 leading-7">
-            More than 3000 users have been helped by World Online Course.
-        </p>
-        <div class="flex flex-col md:flex-row justify-center gap-8 mt-12">
-            <div class="w-full md:w-[360px] bg-secondary bg-opacity-5 rounded-xl border border-secondary p-8">
-                <i class="fas fa-users text-secondary text-5xl mt-5"></i>
-                <h1 class="text-dark font-semibold text-xl mt-7">Customer Care</h1>
-                <p class="text-gray-500 font-normal text-base mt-10 leading-6">
-                    We're here to help you with solar panel installation in Devon and Cornwall. If we were to sum
-                    ourselves up in a few words, those would be "reliable, honest and friendly." We find our customers
-                    agree! We're with you
-                    from the start of the project to the finish.
-                </p>
+            <!-- Box 4-->
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/m4.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">John Wick</h3>
+                <span class="text-xs">120min | Adventure</span>
             </div>
-            <div class="w-full md:w-[360px] bg-secondary bg-opacity-5 rounded-xl border border-secondary p-8">
-                <i class="fa-solid fa-hand-holding-dollar text-secondary text-5xl mt-5"></i>
-                <h1 class="text-dark font-semibold text-xl mt-7">Price</h1>
-                <p class="text-gray-500 font-normal text-base mt-10 leading-6">
-                    As I'm sure you'll have seen, solar systems don't tend to come cheap. Our aim is to make solar power
-                    accessible to everyone, so we price ourselves in a way that makes solar energy more affordable.
-                    We're focused on
-                    helping you and on helping the environment, rather than on turning a profit.
-                </p>
+            <!-- Box 5-->
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/m5.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Aquaman</h3>
+                <span class="text-xs">130min | Action</span>
             </div>
-            <div class="w-full md:w-[360px] bg-secondary bg-opacity-5 rounded-xl border border-secondary p-8">
-                <i class="fa-solid fa-earth-americas text-secondary text-5xl mt-5"></i>
-                <h1 class="text-dark font-semibold text-xl mt-7">Sustainability</h1>
-                <p class="text-gray-500 font-normal text-base mt-10 leading-6">
-                    As we've said, we do this because we truly care about the planet and about seeing people embrace a
-                    greener, more eco-friendly approach to power. The world of green energy can be jargon-filled and
-                    opaque, so we
-                    want to help educate people on the big and little things they can do to protect our planet!
-                </p>
+            <!-- Box 6-->
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/m6.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Black Panther</h3>
+                <span class="text-xs">90min | Thriller</span>
+            </div>
+            <!-- Box 7-->
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/m7.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Thor</h3>
+                <span class="text-xs">130min | Action</span>
+            </div>
+            <!-- Box 8-->
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/m8.png" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Bumblebee</h3>
+                <span class="text-xs">100min | Thriller</span>
+            </div>
+            <!-- Box 9-->
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/m9.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Mortal Engines</h3>
+                <span class="text-xs">100min | Action</span>
+            </div>
+            <!-- Box 10-->
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/m10.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">UnderWorld Blood Wars</h3>
+                <span class="text-xs">100min | Action</span>
             </div>
         </div>
     </section>
-
-    <!-- ! section 8 -->
-    <section class="py-20 min-h-[70vh] flex flex-col md:flex-row justify-center gap-32 px-4">
-        <div class="w-full md:w-[400px]">
-            <i class="fa-solid fa-quote-right text-secondary text-6xl"></i>
-            <h1 class="text-dark font-bold text-5xl my-10">what they say about WOC</h1>
-            <p class="text-dark font-normal text-lg mt-4 leading-8">
-                More than 3000 users have been helped by World Online Course.
-            </p>
-        </div>
-        <div class="w-full md:w-[708px] bg-secondary bg-opacity-5 rounded-3xl p-10">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <h1 class="text-secondary font-bold text-base">What they say</h1>
-                <div class="flex mt-4 md:mt-0">
-                    <i class="fa-solid fa-circle text-[#6B6B6B] text-xs mx-1 cursor-pointer"></i>
-                    <i class="fa-solid fa-circle text-[#D9D9D9] text-xs mx-1 cursor-pointer"></i>
-                    <i class="fa-solid fa-circle text-[#D9D9D9] text-xs mx-1 cursor-pointer"></i>
-                    <i class="fa-solid fa-circle text-[#D9D9D9] text-xs mx-1 cursor-pointer"></i>
-                    <i class="fa-solid fa-circle text-[#D9D9D9] text-xs mx-1 cursor-pointer"></i>
+    <!-- Movies -->
+    <!-- Coming Soon -->
+    <section id="coming soon" class="coming py-16 px-6">
+        <h2 class="heading font-medium text-lg uppercase border-b border-main-color max-w-[1000px] mx-auto">Coming Soon
+        </h2>
+        <div
+            class="coming-container max-w-[1000px] mx-auto grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 mt-8">
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/coming1.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
                 </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Joney English</h3>
+                <span class="text-xs">80min | Comedy</span>
             </div>
-            <p class="text-dark font-normal text-2xl mt-10 leading-relaxed w-full md:w-[516px]">
-                "Studying at WOC is fun, the curriculum is complete, the instructors are competent, and the assignments
-                given are also relevant to the current scope of work."
-            </p>
-            <div class="flex flex-col md:flex-row justify-between items-center mt-12">
-                <div class="flex items-center">
-                    <img src="./Images/profile.jpg" alt="person" class="w-14 h-14 rounded-full object-cover">
-                    <div class="ml-4">
-                        <h3 class="text-dark font-bold text-base">Resky Fernanda</h3>
-                        <h2 class="text-dark font-normal text-base">Product Designer at Tokopedia</h2>
-                    </div>
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/coming2.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
                 </div>
-                <div class="flex gap-4 mt-6 md:mt-0">
-                    <i class="fa-solid fa-chevron-left text-xl cursor-pointer py-4 px-6 border border-dark rounded-full"></i>
-                    <i class="fa-solid fa-chevron-right text-xl cursor-pointer py-4 px-6 border border-dark rounded-full"></i>
+                <h3 class="text-sm font-medium text-main-color mt-2">WarCrafet</h3>
+                <span class="text-xs">120min | Action</span>
+            </div>
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/coming3.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
                 </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Rampage</h3>
+                <span class="text-xs">108min | Adventure</span>
+            </div>
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/coming4.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Airon Lady</h3>
+                <span class="text-xs">120min | Comedy</span>
+            </div>
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/coming5.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Justice League</h3>
+                <span class="text-xs">120min | Adventure</span>
+            </div>
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/coming6.jpeg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Doctor Strange</h3>
+                <span class="text-xs">120min | Adventure</span>
+            </div>
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/coming7.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Captain Marvel</h3>
+                <span class="text-xs">120min | Adventure</span>
+            </div>
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/coming8.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Black Widow</h3>
+                <span class="text-xs">90min | Action</span>
+            </div>
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/coming9.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Ant Man</h3>
+                <span class="text-xs">110min | Adventure</span>
+            </div>
+            <div class="box">
+                <div class="box-img w-full h-[270px]">
+                    <img src="img/coming10.jpg" alt=""
+                        class="w-full h-full object-cover cursor-pointer transition-all duration-200" />
+                </div>
+                <h3 class="text-sm font-medium text-main-color mt-2">Guardiance Of The Galaxy</h3>
+                <span class="text-xs">120min | Adventure</span>
             </div>
         </div>
     </section>
-
-    <!-- !footer -->
-    <footer id="contact" class="bg-[#283646] min-h-[45vh] py-16 md:pb-0 px-4">
-        <div class="flex flex-col md:flex-row justify-around items-center">
-            <div class="text-center md:text-left mb-10 md:mb-0">
-                <img src="./Images/images-card.png" alt="" class="w-48 h-16 object-cover mx-auto md:mx-0 mb-8">
-                <div class="flex flex-col md:flex-row gap-8 md:mb-5">
-                    <h1 class="text-white font-normal text-base tracking-wide">About</h1>
-                    <h1 class="text-white font-normal text-base tracking-wide">Careers</h1>
-                    <h1 class="text-white font-normal text-base tracking-wide">Press</h1>
-                    <h1 class="text-white font-normal text-base tracking-wide">Customer_Care</h1>
-                    <h1 class="text-white font-normal text-base tracking-wide">Services</h1>
-                </div>
-            </div>
-            <div class="text-center md:text-left">
-                <p class="text-white font-normal text-base tracking-wide">Get the freshest news from us</p>
-                <form
-                    class="flex border border-[#B3BDC7] rounded-full overflow-hidden w-full md:w-[406px] mt-4 bg-[#FFFFFF17] bg-opacity-10">
-                    <input type="email" placeholder="Your email address..."
-                        class="flex-1 px-7 py-5 border-none outline-none bg-transparent text-white placeholder-gray-300 text-sm" />
-                    <button type="submit"
-                        class="bg-accent text-white px-6 py-3 border-none text-sm font-semibold cursor-pointer hover:bg-yellow-600 transition-colors duration-300">Subscribe</button>
-                </form>
-            </div>
+    <!-- Coming Soon -->
+    <!-- Newsletter -->
+    <section id="newsletter"
+        class="news py-16 px-6 max-w-[1000px] mx-auto flex flex-col items-center justify-center gap-8">
+        <h2 class="text-2xl font-semibold text-center">
+            Subscribe To Get <br />
+            Newsletter
+        </h2>
+        <form class="flex items-center p-2 bg-bg-color rounded-lg">
+            <input
+                class="email border-0 outline-0 w-[300px] placeholder:text-text-color text-black placeholder:text-sm placeholder:font-normal"
+                type="email" placeholder="Enter Email..." />
+            <input type="submit" value="Subscribe"
+                class="btn border-0 outline-0 cursor-pointer bg-main-color text-bg-color px-6 py-3 rounded-lg font-semibold uppercase" />
+        </form>
+    </section>
+    <!-- Newsletter -->
+    <!-- footer -->
+    <section class="footer py-16 px-6 max-w-[1000px] mx-auto flex justify-between items-center">
+        <a href="index.html" class="logo text-lg font-semibold text-bg-color flex items-center gap-2">
+            <i class="fa-solid fa-film text-2xl text-main-color"></i> Movies
+        </a>
+        <div class="social-icons flex items-center gap-2">
+            <a href="#"
+                class="w-[55px] flex justify-center items-center h-[55px] rounded-full text-2xl text-center leading-[55px] bg-bg-color text-main-color border-4 border-[rgba(2,3,7,0.4)] transition-all duration-200">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="#"
+                class="w-[55px] flex justify-center items-center h-[55px] rounded-full text-2xl text-center leading-[55px] bg-bg-color text-main-color border-4 border-[rgba(2,3,7,0.4)] transition-all duration-200">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="#"
+                class="w-[55px] flex justify-center items-center h-[55px] rounded-full text-2xl text-center leading-[55px] bg-bg-color text-main-color border-4 border-[rgba(2,3,7,0.4)] transition-all duration-200">
+                <i class="fa-brands fa-twitter"></i>
+            </a>
+            <a href="#"
+                class="w-[55px] flex justify-center items-center h-[55px] rounded-full text-2xl text-center leading-[55px] bg-bg-color text-main-color border-4 border-[rgba(2,3,7,0.4)] transition-all duration-200">
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
         </div>
-        <hr class="border-t border-[#71777D] my-10 w-[1275px] mx-auto">
-        <div class="flex flex-col md:flex-row justify-around items-center gap-10  md:gap-60">
-            <p class="text-[#92989F] font-normal text-xs tracking-wide text-center">
-                Terms & Conditions &nbsp&nbsp&nbsp |&nbsp&nbsp&nbsp Privacy Policy &nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
-                Accessibility&nbsp&nbsp&nbsp |&nbsp&nbsp&nbsp Legal&nbsp&nbsp&nbsp |
-            </p>
-            <p class="text-[#92989F] font-normal text-xs tracking-wide text-center">
-                Copyright 2023 - Solidarity Solar Ltd
-            </p>
-        </div>
-    </footer>
-
-   
+    </section>
+    <!-- footer -->
+    <!-- copyrights -->
+    <div class="copy text-center text-bg-color text-lg py-4">
+        <p>&#169; <span class="text-main-color cursor-pointer">Dev Wave</span> All Right Reserved.</p>
+    </div>
+    <script src="./js/main.js"></script>
 </body>
 
 </html>
